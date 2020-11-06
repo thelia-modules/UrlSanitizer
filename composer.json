@@ -1,0 +1,12 @@
+{
+  "name": "thelia/url-sanitizer-module",
+  "description": "Sanitize Urls",
+  "license": "LGPL-3.0+",
+  "type": "thelia-module",
+  "require": {
+    "thelia/installer": "~1.1"
+  },
+  "extra": {
+    "installer-name": "UrlSanitizer"
+  }
+}

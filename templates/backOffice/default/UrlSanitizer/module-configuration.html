@@ -1,0 +1,16 @@
+<div class="general-block-decorator">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-warning">
+                {intl l="Once this module is activated, every rewritten url saved will be automatically sanitized." d="urlsanitizer.bo.default"}
+                <br>
+                {intl l="If you want to sanitize the existing rewritten urls in your database, click on the button below." d="urlsanitizer.bo.default"}
+                <br>
+                {intl l="This will create a sanitized url and redirect the old url to the new one." d="urlsanitizer.bo.default"}
+                <br>
+                {intl l="Be careful ! This cannot be undone." d="urlsanitizer.bo.default"}
+            </div>
+            <a class="btn btn-danger" href="{url path='/admin/module/urlsanitizer/sanitizeall'}">{intl l="Sanitize existing URLs" d="urlsanitizer.bo.default"}</a>
+        </div>
+    </div>
+</div>
