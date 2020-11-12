@@ -24,7 +24,7 @@ class RewriteUrlListener implements EventSubscriberInterface
 
         $sanitizedUrl = $this->sanitizerService->unifyUrl(
             $this->sanitizerService->sanitizeUrl($rewritingUrl->getUrl()),
-            $rewritingUrl->getViewId()
+            $rewritingUrl
         );
 
         $rewritingUrl->setUrl($sanitizedUrl);

@@ -41,7 +41,7 @@ class UrlSanitizerService
             if (!$cleanRewritingUrl) {
                 $cleanRewritingUrl = new RewritingUrl();
 
-                $uniqueUrl = $this->unifyUrl($cleanUrl, $rewrittenUrl->getViewId());
+                $uniqueUrl = $this->unifyUrl($cleanUrl, $rewrittenUrl);
 
                 $cleanRewritingUrl->setUrl($uniqueUrl)
                     ->setView($rewrittenUrl->getView())
@@ -75,18 +75,20 @@ class UrlSanitizerService
         return $url;
     }
 
-    public function unifyUrl($url, $viewId)
+    public function unifyUrl($cleanedUrl, RewritingUrl $rewritingUrl)
     {
         $urlExist = RewritingUrlQuery::create()
-            ->findOneByUrl($url);
+            ->filterByUrl($cleanedUrl)
+            ->filterById($rewritingUrl->getId(), Criteria::NOT_EQUAL)
+            ->findOne();
 
         if (null === $urlExist) {
-            return $url;
+            return $cleanedUrl;
         }
 
-        $urlWithPrefix = $viewId."-".$url;
+        $urlWithPrefix = $rewritingUrl->getViewId()."-".$cleanedUrl;
 
-        return $this->unifyUrl($urlWithPrefix, $viewId);
+        return $this->unifyUrl($urlWithPrefix, $rewritingUrl);
     }
 
     protected function replaceSpace($string, $replacement = '-')
