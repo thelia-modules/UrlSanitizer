@@ -4,15 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
-    <services>
-        <service id="urlsanitizer.service" class="UrlSanitizer\Service\UrlSanitizerService">
-        </service>
-        <service id="urlsanitizer.rewriteurl" class="UrlSanitizer\EventListener\RewriteUrlListener" scope="request">
-            <argument type="service" id="urlsanitizer.service"/>
-            <tag name="kernel.event_subscriber" />
-        </service>
-    </services>
-
     <hooks>
         <hook id="urlsanitizer.module.config.hook" scope="request">
             <tag name="hook.event_listener" event="module.configuration" type="back" templates="render:UrlSanitizer/module-configuration.html" />
