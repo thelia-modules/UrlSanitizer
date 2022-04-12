@@ -33,7 +33,7 @@ class RewriteUrlListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RewritingUrlEvent::PRE_SAVE => ['sanitizeUrl', 64]
+            RewritingUrlEvent::PRE_INSERT => ['sanitizeUrl', 64]
         ];
     }
 }
