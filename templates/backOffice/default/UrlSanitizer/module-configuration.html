@@ -10,7 +10,30 @@
                 <br>
                 {intl l="Be careful ! This cannot be undone." d="urlsanitizer.bo.default"}
             </div>
-            <a class="btn btn-danger" href="{url path='/admin/module/urlsanitizer/sanitizeall'}">{intl l="Sanitize existing URLs" d="urlsanitizer.bo.default"}</a>
+            <a class="btn btn-danger" href="{url path='/admin/module/UrlSanitizer/sanitizeall'}">{intl l="Sanitize existing URLs" d="urlsanitizer.bo.default"}</a>
+
+            <br><hr><br>
+            {form name="urlsanitizer_form_configuration_form"}
+                <form method="post" action="{url path='/admin/module/UrlSanitizer/configuration'}" {form_enctype form=$form}>
+                    {form_hidden_fields form=$form}
+
+                    {render_form_field field="success_url" value={url path='/admin/module/UrlSanitizer'}}
+                    {render_form_field field="error_url" value={url path='/admin/module/UrlSanitizer'}}
+
+                    {if $form_error}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger">{$form_error_message}</div>
+                            </div>
+                        </div>
+                    {/if}
+
+                    {render_form_field field='remove_html'}
+
+                    <br>
+                    <button type="submit" class="btn btn-success" >{intl l="Save Configuration" d="urlsanitizer.bo.default"}</button>
+                </form>
+            {/form}
         </div>
     </div>
 </div>

@@ -5,6 +5,7 @@ namespace UrlSanitizer\Service;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Model\RewritingUrl;
 use Thelia\Model\RewritingUrlQuery;
+use UrlSanitizer\UrlSanitizer;
 
 class UrlSanitizerService
 {
@@ -66,11 +67,17 @@ class UrlSanitizerService
     public function sanitizeUrl($url)
     {
         $url = filter_var(
-            $this->replaceSpace(
-                $this->convertAccents(
-                    $url
+            $this->replaceSpecialCaractere(
+                $this->replaceSpace(
+                    $this->convertAccents(
+                        $url
+                    )
                 )
-        ), FILTER_SANITIZE_URL);
+            ), FILTER_SANITIZE_URL);
+
+        if (UrlSanitizer::getConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY)) {
+            $url = $this->removeHtmlExtension($url);
+        }
 
         return $url;
     }
@@ -94,6 +101,16 @@ class UrlSanitizerService
     protected function replaceSpace($string, $replacement = '-')
     {
         return preg_replace("/\s+/", $replacement, $string);
+    }
+
+    protected function replaceSpecialCaractere($string, $replacement = '')
+    {
+        return preg_replace("/^[^a-zA-Z0-9]+/", $replacement, $string);
+    }
+
+    protected function removeHtmlExtension($string, $replacement = '')
+    {
+        return str_replace('.html', $replacement, $string);
     }
 
     protected function convertAccents($string)
