@@ -11,8 +11,19 @@
                 {intl l="Be careful ! This cannot be undone." d="urlsanitizer.bo.default"}
             </div>
             <a class="btn btn-danger" href="{url path='/admin/module/UrlSanitizer/sanitizeall'}">{intl l="Sanitize existing URLs" d="urlsanitizer.bo.default"}</a>
+        </div>
+    </div>
+</div>
 
-            <br><hr><br>
+<div class="general-block-decorator">
+    <div class="row">
+        <div class="col-md-12 title title-without-tabs">
+            {intl d='urlsanitizer.bo.default' l="Configuration"}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             {form name="urlsanitizer_form_configuration_form"}
                 <form method="post" action="{url path='/admin/module/UrlSanitizer/configuration'}" {form_enctype form=$form}>
                     {form_hidden_fields form=$form}
@@ -29,6 +40,7 @@
                     {/if}
 
                     {render_form_field field='remove_html'}
+                    {render_form_field field='special_characters_regex'}
 
                     <br>
                     <button type="submit" class="btn btn-success" >{intl l="Save Configuration" d="urlsanitizer.bo.default"}</button>

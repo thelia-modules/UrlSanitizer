@@ -3,13 +3,18 @@
 namespace UrlSanitizer\Service;
 
 use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\Exception\PropelException;
 use Thelia\Model\RewritingUrl;
 use Thelia\Model\RewritingUrlQuery;
 use UrlSanitizer\UrlSanitizer;
 
 class UrlSanitizerService
 {
-    public function sanitizeAllExistingUrls()
+    /**
+     * @return void
+     * @throws PropelException
+     */
+    public function sanitizeAllExistingUrls(): void
     {
         $allDefaultRewrittenUrl = RewritingUrlQuery::create()
             ->filterByRedirected(null, Criteria::ISNULL)
@@ -21,7 +26,7 @@ class UrlSanitizerService
 
             $cleanUrl = $this->sanitizeUrl($baseUrl);
 
-            if ("" == $cleanUrl) {
+            if (empty($cleanUrl)) {
                 continue;
             }
 
@@ -64,22 +69,24 @@ class UrlSanitizerService
         }
     }
 
-    public function sanitizeUrl($url)
+    public function sanitizeUrl($url): string
     {
-        if (UrlSanitizer::getConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY)) {
+        if (UrlSanitizer::getConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY, true)) {
             $url = $this->removeHtmlExtension($url);
         }
 
         $url = filter_var(
             $this->replaceMultipleHyphens(
-                $this->replaceSpecialCaractere(
+                $this->replaceSpecialCharacter(
                     $this->replaceSpace(
                         $this->convertAccents(
                             $url
                         )
                     )
                 )
-            ), FILTER_SANITIZE_URL);
+            ),
+            FILTER_SANITIZE_URL
+        );
 
         return strtolower($url);
     }
@@ -100,27 +107,34 @@ class UrlSanitizerService
         return $this->unifyUrl($urlWithPrefix, $rewritingUrl);
     }
 
-    protected function replaceSpace($string, $replacement = '-')
+    protected function replaceSpace($string, $replacement = '-'): string|null
     {
         return preg_replace("/\s+/", $replacement, $string);
     }
 
-    protected function replaceMultipleHyphens($string, $replacement = '-')
+    protected function replaceMultipleHyphens($string, $replacement = '-'): string|null
     {
         return preg_replace('/-+/', $replacement, $string);
     }
 
-    protected function replaceSpecialCaractere($string, $replacement = '')
+    protected function replaceSpecialCharacter($string, $replacement = ''): string|null
     {
-        return preg_replace('/[^a-zA-Z0-9\-]/', $replacement, $string);
+        return preg_replace(
+            '/'.UrlSanitizer::getConfigValue(
+                UrlSanitizer::SPECIAL_CHARS_REGEXP_CONFIG_KEY,
+                '[^a-zA-Z0-9\-]'
+            ).'/',
+            $replacement,
+            $string
+        ) ?? $string;
     }
 
-    protected function removeHtmlExtension($string, $replacement = '')
+    protected function removeHtmlExtension($string, $replacement = ''): string
     {
-        return str_replace('.html', $replacement, $string);
+        return str_ireplace('.html', $replacement, $string);
     }
 
-    protected function convertAccents($string)
+    protected function convertAccents($string): string
     {
         if (!preg_match('/[\x80-\xff]/', $string)) {
             return $string;
@@ -223,8 +237,6 @@ class UrlSanitizerService
             chr(197) . chr(190) => 'z', chr(197) . chr(191) => 's'
         );
 
-        $string = strtr($string, $chars);
-
-        return $string;
+        return strtr($string, $chars);
     }
 }
