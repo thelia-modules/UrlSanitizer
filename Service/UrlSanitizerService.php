@@ -122,7 +122,7 @@ class UrlSanitizerService
         return preg_replace(
             '/'.UrlSanitizer::getConfigValue(
                 UrlSanitizer::SPECIAL_CHARS_REGEXP_CONFIG_KEY,
-                '[^a-zA-Z0-9\-]'
+                '[^a-zA-Z0-9-\.]'
             ).'/',
             $replacement,
             $string
