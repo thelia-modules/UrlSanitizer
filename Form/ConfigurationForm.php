@@ -16,7 +16,7 @@ class ConfigurationForm extends BaseForm
             ->add('remove_html', CheckboxType::class, [
                 'required' => false,
                 'label' => Translator::getInstance()?->trans('Remove ".html" extension from rewritten URLs', [], UrlSanitizer::DOMAIN_NAME),
-                'data' => (bool)UrlSanitizer::getConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY),
+                'data' => (bool)UrlSanitizer::getConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY, true),
                 'label_attr' => [
                     'help' => Translator::getInstance()?->trans(
                         'Check this box if you want to remove the ".html" extension from rewritten URLs.', [], UrlSanitizer::DOMAIN_NAME
