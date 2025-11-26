@@ -39,7 +39,7 @@ class ConfigurationController extends BaseAdminController
         try {
             $data = $this->validateForm($form)->getData();
 
-            UrlSanitizer::setConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY, $data['remove_html']);
+            UrlSanitizer::setConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY, $data['remove_html'] ? 1 : 0);
             UrlSanitizer::setConfigValue(UrlSanitizer::SPECIAL_CHARS_REGEXP_CONFIG_KEY, $data['special_characters_regex']);
 
             return $this->generateSuccessRedirect($form);
