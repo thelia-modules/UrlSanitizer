@@ -1,0 +1,59 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-warning">
+                    {{ 'Once this module is activated, every rewritten url saved will be automatically sanitized.'|trans({}, 'urlsanitizer.bo.default') }}
+                    <br>
+                    {{ 'If you want to sanitize the existing rewritten urls in your database, click on the button below.'|trans({}, 'urlsanitizer.bo.default') }}
+                    <br>
+                    {{ 'This will create a sanitized url and redirect the old url to the new one.'|trans({}, 'urlsanitizer.bo.default') }}
+                    <br>
+                    {{ 'Be careful ! This cannot be undone.'|trans({}, 'urlsanitizer.bo.default') }}
+                </div>
+                <a class="btn btn-danger" href="{{ path('admin_url_sanitizer_sanitizeall') }}">
+                    {{ 'Sanitize existing URLs'|trans({}, 'urlsanitizer.bo.default') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h5 class="card-title mb-0">{{ 'Configuration'|trans({}, 'urlsanitizer.bo.default') }}</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_start(form, {action: path('admin_url_sanitizer_configuration'), method: 'post'}) }}
+
+                    <div class="mb-3 form-check">
+                        {{ form_widget(form.remove_html, {attr: {class: 'form-check-input'}}) }}
+                        {{ form_label(form.remove_html, null, {label_attr: {class: 'form-check-label'}}) }}
+                        {% if form.remove_html.vars.attr.help is defined %}
+                            <div class="form-text">{{ form.remove_html.vars.attr.help }}</div>
+                        {% elseif form.remove_html.vars.label_attr.help is defined %}
+                            <div class="form-text">{{ form.remove_html.vars.label_attr.help }}</div>
+                        {% endif %}
+                        {{ form_errors(form.remove_html) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.special_characters_regex, null, {label_attr: {class: 'form-label'}}) }}
+                        {{ form_widget(form.special_characters_regex, {attr: {class: 'form-control'}}) }}
+                        {% if form.special_characters_regex.vars.label_attr.help is defined %}
+                            <div class="form-text">{{ form.special_characters_regex.vars.label_attr.help }}</div>
+                        {% endif %}
+                        {{ form_errors(form.special_characters_regex) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        {{ 'Save Configuration'|trans({}, 'urlsanitizer.bo.default') }}
+                    </button>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
