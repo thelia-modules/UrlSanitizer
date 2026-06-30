@@ -11,9 +11,11 @@
                     <br>
                     {{ 'Be careful ! This cannot be undone.'|trans({}, 'urlsanitizer.bo.default') }}
                 </div>
-                <a class="btn btn-danger" href="{{ path('admin_url_sanitizer_sanitizeall') }}">
-                    {{ 'Sanitize existing URLs'|trans({}, 'urlsanitizer.bo.default') }}
-                </a>
+                <form method="post" action="{{ path('admin_url_sanitizer_sanitizeall') }}?_token={{ assignToken() }}" class="d-inline">
+                    <button type="submit" class="btn btn-danger">
+                        {{ 'Sanitize existing URLs'|trans({}, 'urlsanitizer.bo.default') }}
+                    </button>
+                </form>
             </div>
         </div>
     </div>

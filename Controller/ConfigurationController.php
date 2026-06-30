@@ -4,6 +4,7 @@ namespace UrlSanitizer\Controller;
 
 use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Thelia\Controller\Admin\BaseAdminController;
@@ -11,6 +12,7 @@ use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Template\ParserContext;
 use Thelia\Form\Exception\FormValidationException;
+use Thelia\Tools\TokenProvider;
 use Thelia\Tools\URL;
 use UrlSanitizer\Form\ConfigurationForm;
 use UrlSanitizer\Service\UrlSanitizerService;
@@ -19,12 +21,17 @@ use UrlSanitizer\UrlSanitizer;
 #[Route('/admin/module/UrlSanitizer', name: 'admin_url_sanitizer_')]
 class ConfigurationController extends BaseAdminController
 {
-    #[Route('/sanitizeall', name: 'sanitizeall')]
-    public function sanitizeAllAction(UrlSanitizerService $urlSanitizerService)
-    {
+    #[Route('/sanitizeall', name: 'sanitizeall', methods: ['POST'])]
+    public function sanitizeAllAction(
+        UrlSanitizerService $urlSanitizerService,
+        Request $request,
+        TokenProvider $tokenProvider
+    ): RedirectResponse|Response {
         if (null !== $response = $this->checkAuth([AdminResources::MODULE], ["UrlSanitizer"], AccessManager::UPDATE)) {
             return $response;
         }
+
+        $tokenProvider->checkToken((string) $request->query->get('_token'));
 
         $urlSanitizerService->sanitizeAllExistingUrls();
 
