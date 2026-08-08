@@ -1,10 +1,10 @@
 {
   "name": "thelia/url-sanitizer-module",
   "description": "Sanitize Urls",
-  "license": "LGPL-3.0+",
+  "license": "GPL-3.0-or-later",
   "type": "thelia-module",
   "require": {
-    "thelia/installer": "~1.1"
+    "thelia/installer": "^1.6"
   },
   "replace": {
     "thelia/url-remove-accent-module":"~1.0.0"
