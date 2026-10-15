@@ -32,7 +32,7 @@ final class ConfigurationHook extends BaseHook
     {
         $form = $this->formFactory->createForm(ConfigurationForm::getName(), data: [
             'remove_html' => (bool) UrlSanitizer::getConfigValue(UrlSanitizer::REMOVE_HTML_CONFIG_KEY, true),
-            'special_characters_regex' => UrlSanitizer::getConfigValue(UrlSanitizer::SPECIAL_CHARS_REGEXP_CONFIG_KEY, '[^a-zA-Z0-9-\.]'),
+            'special_characters_regex' => UrlSanitizer::getConfigValue(UrlSanitizer::SPECIAL_CHARS_REGEXP_CONFIG_KEY, UrlSanitizer::DEFAULT_SPECIAL_CHARS_REGEXP),
         ]);
 
         $event->add($this->render('UrlSanitizer/module-configuration.html.twig', [

@@ -14,6 +14,14 @@ class UrlSanitizer extends BaseModule
     public const SPECIAL_CHARS_REGEXP_CONFIG_KEY = 'special_chars_regexp_config_key';
 
     /**
+     * A rewritten URL is a path: the slash separates the levels a site nests its pages under
+     * (TheliaCMS builds `parent/child`), so it stays out of the stripped characters, as in the
+     * core's own sanitizer. Without it, `parent/child` is stored as `parentchild` and the page
+     * id is prefixed on every save, since that address is already taken.
+     */
+    public const DEFAULT_SPECIAL_CHARS_REGEXP = '[^a-zA-Z0-9-\.\/]';
+
+    /**
      * Defines how services are loaded in your modules.
      */
     public static function configureServices(ServicesConfigurator $servicesConfigurator): void
